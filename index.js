@@ -16,6 +16,12 @@
 process.env.DEBUG = 'actions-on-google:*';
 const App = require('actions-on-google').ApiAiApp;
 
+// =============================MY MODULES======================================
+
+const MODULE_COMMUTE = require('./commute/index.js');
+
+// =============================================================================
+
 // API.AI actions
 const UNRECOGNIZED_DEEP_LINK = 'deeplink.unknown';
 const TELL_FACT = 'tell.fact';
@@ -123,7 +129,9 @@ function getRandomFact (facts) {
   return randomFact;
 }
 
-exports.factsAboutGoogle = (request, response) => {
+// ==== CLOUD FUNCTION ===
+
+exports.startSandbox = (request, response) => {
   const app = new App({ request, response });
   console.log('Request headers: ' + JSON.stringify(request.headers));
   console.log('Request body: ' + JSON.stringify(request.body));
@@ -158,6 +166,7 @@ Google's history or its headquarters. Which do you want to hear about?`,
       return;
     }
 
+    // passed from api.ai
     let factCategory = app.getArgument(CATEGORY_ARGUMENT);
 
     if (factCategory === FACT_TYPE.HISTORY) {
@@ -300,6 +309,12 @@ ${redirectCategory} instead. `;
   actionMap.set(UNRECOGNIZED_DEEP_LINK, unhandledDeepLinks);
   actionMap.set(TELL_FACT, tellFact);
   actionMap.set(TELL_CAT_FACT, tellCatFact);
+
+// =============================MY MODULES======================================
+
+  actionMap.set(MODULE_COMMUTE.L_TRAIN_STATUS, MODULE_COMMUTE.getLTrainStatus);
+
+// =============================================================================
 
   app.handleRequest(actionMap);
 };

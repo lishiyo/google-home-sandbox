@@ -10,11 +10,13 @@
   },
   "scripts": {
     "lint": "semistandard --fix \"**/*.js\"",
-    "start": "functions deploy factsAboutGoogle --trigger-http",
-    "deploy": "gcloud beta functions deploy factsAboutGoogle --trigger-http --stage-bucket <storage_bucket_name>"
+    "startem": "functions-emulator start && functions-emulator deploy startSandbox --trigger-http",
+    "em": "functions-emulator deploy startSandbox --trigger-http",
+    "deploy": "gcloud beta functions deploy startSandbox --trigger-http --stage-bucket factsapp-98181.appspot.com"
   },
   "dependencies": {
-    "actions-on-google": "^1.0.0"
+    "actions-on-google": "^1.0.0",
+    "x-ray": "^2.3.2"
   },
   "devDependencies": {
     "semistandard": "^9.1.0"
